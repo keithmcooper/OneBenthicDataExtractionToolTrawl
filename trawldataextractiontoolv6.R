@@ -284,7 +284,7 @@ ui <- fluidPage(
     
     #__________________________________________________________________________________________
     #### MAP ####    
-    column(5,leafletOutput("map",width = "100%", height=960),style='border-left: 1px solid grey'),#850
+    column(5,leafletOutput("map",width = "100%", height=950),style='border-left: 1px solid grey'),#850
     column(5,style='border-left: 1px solid grey',
            
            #__________________________________________________________________________________________
