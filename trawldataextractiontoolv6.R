@@ -125,26 +125,37 @@ pool2 <- dbPool(drv = dbDriver(dw$driver2),
                user = dw$uid2,
                password = dw$pwd2)
 #__________________________________________________________________________________________
-#### GET SPATIAL LAYERS FROM OneBenthic - WHERE NO API AVAILABLE (MPAS, O&G, DISP) ####
+#### BRING IN ACTIVITY LAYERS ####
 
 ## API
 #Source: EU level: https://www.emodnet-humanactivities.eu/view-data.php 
 euowf <- readLines("https://ows.emodnet-humanactivities.eu/wfs?SERVICE=WFS&VERSION=1.1.0&request=GetFeature&typeName=windfarmspoly&OUTPUTFORMAT=json") %>% paste(collapse = "\n") %>% geojson_sf()
+agg <- readLines("https://opendata.arcgis.com/datasets/d734d753d04649e2a7e1c64b820a5df9_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
+owf <- readLines("https://opendata.arcgis.com/datasets/4da955de094e475d8d902ee446e38d58_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
+owf_cab <- readLines("https://opendata.arcgis.com/datasets/ceb51568455e4a9ba85bfd7c2da36fdc_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
+wave <- readLines("https://opendata.arcgis.com/datasets/d9f9dbc0e29b410c87ba544f6082a0d0_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
+#wave_cab <- readLines("https://opendata.arcgis.com/datasets/bf376b05c6ae489b8b8687d6b7d6525d_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf() # layer depricated
+tidal <- readLines("https://opendata.arcgis.com/datasets/db94124b152641a992d4e8dfa14d59f2_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
+tidal_cab <- readLines("https://opendata.arcgis.com/datasets/3e5203ce7daa4ae08690699925668f46_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
+oga <- readLines("https://opendata.arcgis.com/datasets/3c950a2c8186438899f99ced733dd947_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
+R4_chara <- readLines("https://opendata.arcgis.com/datasets/c0e61d8972e4438ab1c39304b7f28608_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
+R4_bid <- readLines("https://opendata.arcgis.com/datasets/54dce8a263324a85b36523e31fff20cc_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
 
+## SPATIAL DATA FROM ONEBENTHIC
 mcz <-  st_read(pool2, query = "SELECT * FROM spatial.c20190905_offshorempas_wgs84 WHERE site_statu = 'MCZ - Secretary of State';")
 sac <-  st_read(pool2, query = "SELECT * FROM spatial.c20190905_offshorempas_wgs84 WHERE site_statu = 'SAC'or site_statu = 'cSAC';")
 ncmpa <-  st_read(pool2, query = "SELECT * FROM spatial.c20190905_offshorempas_wgs84 WHERE site_statu = 'NCMPA';")
 disp  <-  st_read(pool2, query = "SELECT * FROM spatial.disposalSiteJan2020;")
-agg <- st_read(pool2, query = "SELECT * FROM ap_marine_aggregate.extraction_areas;")
-oga <- st_read(pool2, query = "SELECT * FROM spatial.oga_licences_wgs84;")
-owf <- st_read(pool2, query = "SELECT * FROM spatial.offshore_wind_site_agreements_england_wales__ni__the_crown_esta;")
-owf_cab <- st_read(pool2, query = "SELECT * FROM spatial.offshore_wind_cable_agreements_england_wales__ni_the_crown_esta;")
-wave <- st_read(pool2, query = "SELECT * FROM spatial.offshore_wave_site_agreements_england_wales__ni_the_crown_estat;")
-wave_cab <- st_read(pool2, query = "SELECT * FROM spatial.offshore_wave_cable_agreements_england_wales__ni_the_crown_esta;")
-tidal <- st_read(pool2, query = "SELECT * FROM spatial.offshore_tidal_stream_site_agreements_england_wales__ni_the_cro;")
-tidal_cab <- st_read(pool2, query = "SELECT * FROM spatial.offshore_tidal_stream_cable_agreements_england_wales__ni_the_cr;")
-R4_chara <-st_read(pool2, query = "SELECT * FROM spatial.offshore_wind_leasing_round_4_characterisation_areas_england_wa;")
-R4_bid <- st_read(pool2, query = "SELECT * FROM spatial.offshore_wind_leasing_round_4_bidding_areas_england_wales_and_n;")
+#agg <- st_read(pool, query = "SELECT * FROM ap_marine_aggregate.extraction_areas;")
+#oga <- st_read(pool, query = "SELECT * FROM spatial.oga_licences_wgs84;")
+#owf <- st_read(pool, query = "SELECT * FROM spatial.offshore_wind_site_agreements_england_wales__ni__the_crown_esta;")
+#owf_cab <- st_read(pool, query = "SELECT * FROM spatial.offshore_wind_cable_agreements_england_wales__ni_the_crown_esta;")
+#wave <- st_read(pool, query = "SELECT * FROM spatial.offshore_wave_site_agreements_england_wales__ni_the_crown_estat;")
+#wave_cab <- st_read(pool, query = "SELECT * FROM spatial.offshore_wave_cable_agreements_england_wales__ni_the_crown_esta;")
+#tidal <- st_read(pool, query = "SELECT * FROM spatial.offshore_tidal_stream_site_agreements_england_wales__ni_the_cro;")
+#tidal_cab <- st_read(pool, query = "SELECT * FROM spatial.offshore_tidal_stream_cable_agreements_england_wales__ni_the_cr;")
+#R4_chara <- st_read(pool, query = "SELECT * FROM spatial.offshore_wind_leasing_round_4_characterisation_areas_england_wa;")
+#R4_bid <- st_read(pool, query = "SELECT * FROM spatial.offshore_wind_leasing_round_4_bidding_areas_england_wales_and_n;")
 
 ## Check class of objects
 #class(mcz)#[1] "sf"         "data.frame"
@@ -163,68 +174,99 @@ R4_bid <- st_read(pool2, query = "SELECT * FROM spatial.offshore_wind_leasing_ro
 #class(R4_bid)#[1] "sf"         "data.frame"
 
 ## Check CRS
-#st_crs(mcz)#Coordinate Reference System: NA
-#st_crs(sac)#Coordinate Reference System: NA
-#st_crs(ncmpa)#Coordinate Reference System: NA
-#st_crs(oga)#Coordinate Reference System: NA
-#st_crs(disp)#Coordinate Reference System: NA
-#st_crs(agg) # 4326
-#st_crs(owf)#Coordinate Reference System: NA
-#st_crs(owf_cab)#Coordinate Reference System: NA
-#st_crs(wave)#Coordinate Reference System: NA
+st_crs(mcz)#Coordinate Reference System: NA
+st_crs(sac)#Coordinate Reference System: NA
+st_crs(ncmpa)#Coordinate Reference System: NA
+st_crs(oga)#Coordinate Reference System: NA
+st_crs(disp)#Coordinate Reference System: NA
+st_crs(agg) # 4326
+st_crs(owf)#Coordinate Reference System: NA
+st_crs(owf_cab)#Coordinate Reference System: NA
+st_crs(wave)#Coordinate Reference System: NA
 #st_crs(wave_cab)#Coordinate Reference System: NA
-#st_crs(tidal)#Coordinate Reference System: NA
-#st_crs(tidal_cab)#Coordinate Reference System: NA
-#st_crs(R4_chara)#Coordinate Reference System: NA
-#st_crs(R4_bid)#Coordinate Reference System: NA
+st_crs(tidal)#Coordinate Reference System: NA
+st_crs(tidal_cab)#Coordinate Reference System: NA
+st_crs(R4_chara)#Coordinate Reference System: NA
+st_crs(R4_bid)#Coordinate Reference System: NA
 
 ## Set CRS where necessary
 st_crs(mcz) <- 4326
 st_crs(sac) <- 4326
 st_crs(ncmpa) <- 4326
-st_crs(oga) <- 4326
+#st_crs(oga) <- 4326
 st_crs(disp) <- 4326
-st_crs(owf) <- 4326
-st_crs(owf_cab) <- 4326
-st_crs(wave) <- 4326
-st_crs(wave_cab) <- 4326
-st_crs(tidal) <- 4326
-st_crs(tidal_cab) <- 4326
-st_crs(R4_chara) <- 4326
-st_crs(R4_bid) <- 4326
+#st_crs(owf) <- 4326
+#st_crs(owf_cab) <- 4326
+#st_crs(wave) <- 4326
+#st_crs(wave_cab) <- 4326
+#st_crs(tidal) <- 4326
+#st_crs(tidal_cab) <- 4326
+#st_crs(R4_chara) <- 4326
+#st_crs(R4_bid) <- 4326
 
 #__________________________________________________________________________________________
 #### MAP LAYERS SOURCE INFO ####
-layer <- data.frame("Layer"=c("euowf","owf","owf_cab","R4_chara","R4_bid","agg","disp","wave","wave_cab","tidal","tidal_cab","oga","mcz","sac","ncmpa"),
-                    "Detail"=c("European Offshore wind areas - Emodnet",
-                      "Offshore Wind Site Agreements (England, Wales & NI) - The Crown Estate",
-                               "Offshore Wind Cable Agreements (England, Wales & NI), The Crown Estate",
-                               "Offshore Wind Leasing Round 4 Characterisation Areas (England, Wales and NI) - The Crown Estate",
-                               "Offshore Wind Leasing Round 4 Bidding Areas (England, Wales and NI) - The Crown Estate",
-                               "Offshore Minerals Aggregates Site Agreements (England, Wales & NI), The Crown Estate",
-                               "UK Disposal Site Layer, Cefas",
-                               "Offshore Wave Site Agreements (England, Wales & NI), The Crown Estate",
-                               "Offshore Wave Cable Agreements (England, Wales & NI), The Crown Estate",
-                               "Offshore Tidal Stream Site Agreements (England, Wales & NI), The Crown Estate",
-                               "Offshore Tidal Stream Cable Agreements (England, Wales & NI), The Crown Estate",
-                               "OGA Licences WGS84, Oil and Gas Authority","Marine Conservation Zones (MCZ)","Special Area of Conservation","Nature Conservation Marine Protected Areas (Scotland)"),
-                    "Link"=c("https://ows.emodnet-humanactivities.eu/wfs?SERVICE=WFS&VERSION=1.1.0&request=GetFeature&typeName=windfarmspoly&OUTPUTFORMAT=json",
-                            "https://opendata.arcgis.com/datasets/b58c1254c04642db80bfd4d8f34a1079_0.geojson",
-                             "https://opendata.arcgis.com/datasets/c42f90c49f0d44f0997eaa52d692be3d_0.geojson",
-                             "https://opendata.arcgis.com/datasets/c0e61d8972e4438ab1c39304b7f28608_0.geojson",
-                             "https://opendata.arcgis.com/datasets/54dce8a263324a85b36523e31fff20cc_0.geojson",
-                             "https://opendata.arcgis.com/datasets/d734d753d04649e2a7e1c64b820a5df9_0.geojson",
-                             "http://data.cefas.co.uk/#/View/407",
-                             "https://opendata.arcgis.com/datasets/d9f9dbc0e29b410c87ba544f6082a0d0_0.geojson",
-                             "https://opendata.arcgis.com/datasets/00ab10c847fb42a9bef8f0f4644c41ac_0.geojson",
-                             "https://opendata.arcgis.com/datasets/db94124b152641a992d4e8dfa14d59f2_0.geojson",
-                             "https://opendata.arcgis.com/datasets/3e5203ce7daa4ae08690699925668f46_0.geojson",
-                             "https://opendata.arcgis.com/datasets/3c950a2c8186438899f99ced733dd947_0.geojson",
-                             "https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27/c20190905_OffshoreMPAs_WGS84.shp",
-                             "https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27/c20190905_OffshoreMPAs_WGS84.shp",
-                             "https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27/c20190905_OffshoreMPAs_WGS84.shp"))
+map_overlays <- data.frame(
+  Code=c("euowf",
+               "owf",
+               "owf_cab",
+               "R4_chara",
+               "R4_bid",
+               "agg",
+               "disp",
+               "wave",
+               #"wave_cab",
+               "tidal",
+               "tidal_cab",
+               "oga",
+               "mcz",
+               "sac",
+               "ncmpa"),
+  Link=c('<p><a href="https://ows.emodnet-humanactivities.eu/wfs?SERVICE=WFS&VERSION=1.1.0&request=GetFeature&typeName=windfarmspoly&OUTPUTFORMAT=json"
+      >Wind Farms (Polygons)</a></p>',
+         '<p><a href="https://opendata.arcgis.com/datasets/4da955de094e475d8d902ee446e38d58_0.geojson"
+      >Offshore Wind Site Agreements (England, Wales & NI), The Crown Estate</a></p>',
+         '<p><a href="https://opendata.arcgis.com/datasets/ceb51568455e4a9ba85bfd7c2da36fdc_0.geojson"
+      >Offshore Wind Cable Agreements (England, Wales & NI), The Crown Estate</a></p>',
+         '<p><a href="https://opendata.arcgis.com/datasets/c0e61d8972e4438ab1c39304b7f28608_0.geojson"
+     >Offshore Wind Leasing Round 4 Characterisation Areas (England, Wales and NI), The Crown Estate</a></p>',
+         '<p><a href="https://opendata.arcgis.com/datasets/54dce8a263324a85b36523e31fff20cc_0.geojson"
+      >Offshore Wind Leasing Round 4 Bidding Areas (England, Wales and NI), The Crown Estate</a></p>',
+         '<p><a href="https://opendata.arcgis.com/datasets/d734d753d04649e2a7e1c64b820a5df9_0.geojson"
+      >Offshore Minerals Aggregates Site Agreements (England, Wales & NI), The Crown Estate</a></p>',
+         '<p><a href="http://data.cefas.co.uk/#/View/407"
+      >UK Disposal Site Layer, Cefas</a></p>',
+         '<p><a href="https://opendata.arcgis.com/datasets/d9f9dbc0e29b410c87ba544f6082a0d0_0.geojson"
+     >Offshore Wave Site Agreements (England, Wales & NI), The Crown Estate</a></p>',
+         #'<p><a href="https://opendata.arcgis.com/datasets/bf376b05c6ae489b8b8687d6b7d6525d_0.geojson">Visit W3Schools.com!</a></p>',
+         '<p><a href="https://opendata.arcgis.com/datasets/db94124b152641a992d4e8dfa14d59f2_0.geojson"
+      >Offshore Tidal Stream Site Agreements (England, Wales & NI), The Crown Estate</a></p>',
+         '<p><a href="https://opendata.arcgis.com/datasets/3e5203ce7daa4ae08690699925668f46_0.geojson"
+      >Offshore Tidal Stream Cable Agreements (England, Wales & NI), The Crown Estate</a></p>',
+         '<p><a href="https://opendata.arcgis.com/datasets/3c950a2c8186438899f99ced733dd947_0.geojson"
+      >OGA Licences WGS84, Oil and Gas Authority</a></p>',
+         '<p><a href="https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27/c20190905_OffshoreMPAs_WGS84.shp"
+      >Marine Conservation Zones (MCZ)</a></p>',
+         '<p><a href="https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27/c20190905_OffshoreMPAs_WGS84.shp"
+      >Special Area of Conservation (SAC)</a></p>',
+         '<p><a href="https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27/c20190905_OffshoreMPAs_WGS84.shp"
+      >Nature Conservation Marine Protected Areas (Scotland)</a></p>'),
+  Description=c("Offshore wind installations in European seas from the European Marine Observation and Data Network (EMODnet)",
+          "This dataset represents all current offshore wind farm agreements in pre-planning, planning, construction and operational phases, as well as Preferred Projects subject to HRA, in English, Welsh and Northern Irish waters.",
+          "This dataset represents all current export cables for offshore wind farm agreements in pre-planning, planning, construction and operational phases in English, Welsh and Northern Irish waters.",
+          "This dataset represents areas of seabed defined by The Crown Estate within each of the Bidding Areas which are considered to present the greatest opportunity to Bidders based on thorough assessment of the constraints.",
+          "This dataset represents the external boundary of the areas of seabed within which Bidders can propose projects through the Round 4 leasing process.",
+          "This dataset represents all current marine aggregates site agreements in English, Welsh and Northern Irish waters.",
+          "UK Disposal Sites (layer maintained by Cefas)",
+          "This dataset represents all current wave agreements in English, Welsh and Northern Irish waters.",
+          #"This dataset represents all current wave agreements in English, Welsh and Northern Irish waters.",
+          "This dataset represents all current tidal stream agreements in English, Welsh and Northern Irish waters",
+          "This dataset represents all current export cables for tidal stream agreements in English, Welsh and Northern Irish waters.",
+          "OGA Licences WGS84, Oil and Gas Authority",
+          "Marine Conservation Zones (MCZ)",
+          "Special Area of Conservation (SAC)",
+          "Nature Conservation Marine Protected Areas (Scotland)"))
 
-layer$Link<- paste0("<a href='",layer$Link,"'>",layer$Link,"</a>")
 
 #__________________________________________________________________________________________
 #### USER INTERFACE ####
@@ -242,7 +284,7 @@ ui <- fluidPage(
     
     #__________________________________________________________________________________________
     #### MAP ####    
-    column(5,leafletOutput("map",width = "100%", height=850),style='border-left: 1px solid grey'),
+    column(5,leafletOutput("map",width = "100%", height=960),style='border-left: 1px solid grey'),#850
     column(5,style='border-left: 1px solid grey',
            
            #__________________________________________________________________________________________
@@ -259,7 +301,7 @@ ui <- fluidPage(
              tabPanel("About",
                       
                       h4("App purpose"),"
-To allow users to explore and download trawl sample data (macrofaunal abundances/biomass) from the",tags$b("OneBenthic")," database. Select by",tags$b("survey")," (drop-down list), or",tags$b("sample"),"(map drawing tool). Selected samples are shown in a table (see appropriate tab), with data available for csv download. Where data providers withold permission, only sample metadata will be output. Details of the activity layers shown in the map can be found in the 'Map Layers' tab.",br(), 
+To allow users to explore and download trawl sample data (macrofaunal abundances/biomass) from the",tags$b("OneBenthic")," database. Select by",tags$b("survey")," (drop-down list), or",tags$b("sample"),"(map drawing tool). Selected samples are shown in a table (see appropriate tab), with data available for csv download. Where data providers withold permission, only sample metadata will be output. Details of the activity layers shown in the map can be found in the 'Map Overlays' tab.",br(), 
                       h4("What is OneBenthic?"),"Large quantities of benthic data are now in the public domain, yet are distributed across multiple repositories. ", "The purpose of the ",tags$b("OneBenthic"), "big data initiative is to bring these disperate datasets together in one place, thereby aiding research and facilitating reuse of data. Big data are essential for addressing key questions concerning biodiversity, marine spatial planning, conservation, climate change and cumulative effects. They can also facilitate differrent ways of working, helping to reduce the costs of environmental assessment for seabed users and developers. Taxon names are standardized according to the", tags$a(href="http://www.marinespecies.org/", "World Register of Marine Species."),"The ",tags$b("OneBenthic")," database links directly to a range of other apps providing useable information back to data providers (and the wider public). All apps are available from",tags$a(href="https://openscience.cefas.co.uk/", "CefasOpenScience,"),
                       "These tools are actively being used by offshore marine industries and government for purposes of project planning, licence compliance monitoring and research.",br(),
                       h4("Origin of data"),"Data originate from multiple sources and providers (see 'Data Provider' tab). Subject to funding, new publicly available data will continue to be added to",tags$b("OneBenthic")," so that it continues to provide an up-to-date and 'complete' source of UK benthic data.",br(),
@@ -270,19 +312,21 @@ Please cite the database as follows: ",br(),tags$b("OneBenthic")," database (202
                       style = 'font-size:90%'),
              
              #__________________________________________________________________________________________
-             #### TAB: MAP LAYERS ####
-             tabPanel("Map Layers",br(),DT::dataTableOutput("activitytable"),style = 'font-size:85%'),
+             #### TAB: MAP OVERLAYS ####
+             #tabPanel("Map Layers",br(),DT::dataTableOutput("activitytable"),style = 'font-size:85%'),
+             tabPanel("Map Overlays",br(),htmlOutput("activitytable"),style = 'font-size:85%'),
              
              #__________________________________________________________________________________________
              #### TAB: DATA PROVIDERS ####
-             tabPanel("Data Providers",br(),"We gratefully acknowledge all the individual data providers:",br(),
-                      h4("Government"),  tags$i("Department for Environment, Food and Rural Affairs (DEFRA); Centre for Environment, Fisheries and Aquaculture Science (CEFAS)"),br(),
-                      h4("Marine Aggregates"),br(),
-                      h4("Offshore Wind"),br(),
-                      h4("Oil & Gas"), br(),
-                      h4("Nuclear"),br(),
+             tabPanel("Data Providers",br(),"We gratefully acknowledge all the individual data providers:",br(),br(),
+                      h4("Government"), tags$i("Department for Environment, Food and Rural Affairs (DEFRA); Centre for Environment, Fisheries and Aquaculture Science (CEFAS)"),br(),br(),
+                      h4("Marine Aggregates"),tags$i("Hanson Aggregates Marine Limited"),br(),br(),
+                      h4("Offshore Wind"), tags$i("SMart Wind Limited"),br(),br(),
+                      h4("Oil & Gas"), br(),br(),
+                      h4("Nuclear"),tags$i("EDF Energy"),br(),br(),
                       h4("Ports & Harbours"),
                       style = 'font-size:90%'),
+             
              #__________________________________________________________________________________________
              #### TAB: FUNDERS ####
              
@@ -305,10 +349,17 @@ server <- function(input, output) {
   #__________________________________________________________________________________________
   #### TABLE FOR ACTIVITY LAYERS ####
   
-  output$activitytable <- DT::renderDataTable(
-    
-    DT::datatable(layer, options = list(pageLength = 9),escape=FALSE)
-  )
+  library(knitr)
+  library(kableExtra)
+
+  output$activitytable <- renderText({
+
+    kable(map_overlays, escape=FALSE,format = "html") %>%
+      column_spec (1, bold = T)%>%
+      kable_styling(bootstrap_options = c("striped","hover", "condensed"))#%>%
+      #scroll_box( height = "900px")#width = "900px",
+
+  })
   
   #__________________________________________________________________________________________  
   #### INTERACTIVE MAP ####
@@ -318,22 +369,23 @@ server <- function(input, output) {
     leaflet() %>%
       addProviderTiles(providers$Esri.OceanBasemap,options = providerTileOptions(noWrap = TRUE))%>%
       addPolygons(data=euowf,color = "#444444", weight = 1, smoothFactor = 0.5,group = "euowf",popup = paste0("<b>Name: </b>", euowf$name))%>%
-      addPolygons(data=owf,color = "#444444", weight = 1, smoothFactor = 0.5,group = "owf",popup = paste0("<b>Name: </b>", owf$name_prop, "<br>","<b>Status: </b>", owf$inf_status))%>%
-      addPolygons(data=owf_cab,color = "#444444", weight = 1, smoothFactor = 0.5,group = "owf_cab",popup = paste0("<b>Name: </b>", owf_cab$name_prop, "<br>","<b>Status: </b>", owf_cab$infra_stat))%>%
-      addPolygons(data=R4_chara,color = "#444444", weight = 1, smoothFactor = 0.5,group = "R4_chara",popup = paste0("<b>Name: </b>", R4_chara$name))%>%
-      addPolygons(data=R4_bid,color = "#444444", weight = 1, smoothFactor = 0.5,group = "R4_bid",popup = paste0("<b>Name: </b>", R4_bid$name, "<br>","<b>Status: </b>", R4_bid$bidding_ar))%>%
-      addPolygons(data=agg,color = "#444444", weight = 1, smoothFactor = 0.5,group = "agg",popup = paste0("<b>Name: </b>", agg$area_name, "<br>","<b>Number: </b>", agg$area_numbe))%>%
+      addPolygons(data=owf,color = "#444444", weight = 1, smoothFactor = 0.5,group = "owf",popup = paste0("<b>Name: </b>", owf$Name_Prop, "<br>","<b>Status: </b>", owf$Inf_Status))%>%
+      addPolygons(data=owf_cab,color = "#444444", weight = 1, smoothFactor = 0.5,group = "owf_cab",popup = paste0("<b>Name: </b>", owf_cab$Name_Prop, "<br>","<b>Status: </b>", owf_cab$Infra_Stat))%>%
+      addPolygons(data=R4_chara,color = "#444444", weight = 1, smoothFactor = 0.5,group = "R4_chara",popup = paste0("<b>Name: </b>", R4_chara$Name))%>%
+      addPolygons(data=R4_bid,color = "#444444", weight = 1, smoothFactor = 0.5,group = "R4_bid",popup = paste0("<b>Name: </b>", R4_bid$Name, "<br>","<b>Status: </b>", R4_bid$Bidding_Ar))%>%
+      addPolygons(data=agg,color = "#444444", weight = 1, smoothFactor = 0.5,group = "agg",popup = paste0("<b>Name: </b>", agg$Area_Name, "<br>","<b>Number: </b>", agg$Area_Numbe))%>%
       addPolygons(data=disp,color = "#444444", weight = 1, smoothFactor = 0.5,group = "disp",popup = paste0("<b>Name: </b>", disp$name_, "<br>","<b>Number: </b>", disp$site_))%>%
-      addPolygons(data=wave,color = "#444444", weight = 1, smoothFactor = 0.5,group = "wave",popup = paste0("<b>Name: </b>", wave$name_prop, "<br>","<b>Status: </b>", wave$inf_status))%>%
-      addPolygons(data=wave_cab,color = "#444444", weight = 1, smoothFactor = 0.5,group = "wave_cab",popup = paste0("<b>Name: </b>", wave_cab$name_prop, "<br>","<b>Status: </b>", wave_cab$infra_stat))%>%
-      addPolygons(data=tidal,color = "#444444", weight = 1, smoothFactor = 0.5,group = "tidal",popup = paste0("<b>Name: </b>", tidal$name_prop, "<br>","<b>Status: </b>", tidal$inf_statUS))%>%
-      addPolygons(data=tidal_cab,color = "#444444", weight = 1, smoothFactor = 0.5,group = "tidal_cab",popup = paste0("<b>Name: </b>", tidal_cab$name_prop, "<br>","<b>Status: </b>", tidal_cab$infra_stat))%>%
+      addPolygons(data=wave,color = "#444444", weight = 1, smoothFactor = 0.5,group = "wave",popup = paste0("<b>Name: </b>", wave$Name_Prop, "<br>","<b>Status: </b>", wave$Inf_Status))%>%
+      #addPolygons(data=wave_cab,color = "#444444", weight = 1, smoothFactor = 0.5,group = "wave_cab",popup = paste0("<b>Name: </b>", wave_cab$name_prop, "<br>","<b>Status: </b>", wave_cab$infra_stat))%>%
+      addPolygons(data=tidal,color = "#444444", weight = 1, smoothFactor = 0.5,group = "tidal",popup = paste0("<b>Name: </b>", tidal$Name_Prop, "<br>","<b>Status: </b>", tidal$Inf_Status))%>%
+      addPolygons(data=tidal_cab,color = "#444444", weight = 1, smoothFactor = 0.5,group = "tidal_cab",popup = paste0("<b>Name: </b>", tidal_cab$Name_Prop, "<br>","<b>Status: </b>", tidal_cab$Infra_Stat))%>%
       addPolygons(data=mcz,color = "#ff8b3d", weight = 1, smoothFactor = 0.5,group = "mcz",popup = paste0("<b>Name: </b>", mcz$site_name))%>%
       addPolygons(data=sac,color = "#ff8b3d", weight = 1, smoothFactor = 0.5,group = "sac",popup = paste0("<b>Name: </b>", sac$site_name))%>%
       addPolygons(data=ncmpa,color = "#ff8b3d", weight = 1, smoothFactor = 0.5,group = "ncmpa",popup = paste0("<b>Name: </b>", ncmpa$site_name))%>%
-      addPolygons(data=oga,color = "#444444", weight = 1, smoothFactor = 0.5,group = "oga",popup = paste0("<b>Number: </b>", oga$licref, "<br>","<b>Organisation: </b>", oga$licorggrp))%>%
+      addPolygons(data=oga,color = "#444444", weight = 1, smoothFactor = 0.5,group = "oga",popup = paste0("<b>Number: </b>", oga$LICREF, "<br>","<b>Organisation: </b>", oga$LICORGGR))%>%
       addLayersControl(
-        overlayGroups = c("euowf","owf","owf_cab","R4_chara","R4_bid","agg","disp","wave","wave_cab","tidal","tidal_cab","oga","mcz","sac","ncmpa"),options = layersControlOptions(collapsed = FALSE))%>%hideGroup(c("euowf","owf","owf_cab","R4_chara","R4_bid","agg","disp","wave","wave_cab","tidal","tidal_cab","oga","mcz","sac","ncmpa"))%>%
+        overlayGroups = c("euowf","owf","owf_cab","R4_chara","R4_bid","agg","disp","wave","tidal","tidal_cab","oga","mcz","sac","ncmpa"),options = layersControlOptions(collapsed = FALSE))%>%#"wave_cab",
+      hideGroup(c("euowf","owf","owf_cab","R4_chara","R4_bid","agg","disp","wave","tidal","tidal_cab","oga","mcz","sac","ncmpa"))%>%#"wave_cab",
       addCircleMarkers(data=points,~Longitude,~Latitude,radius = 2,stroke = FALSE,fillOpacity = 0.2,popup = paste0("<b>Survey Name: </b>",points$SurveyName,"<br>","<b>Sample Code: </b>",points$SampleCode))%>%
       addCircleMarkers(data=points,~Longitude,~Latitude,radius = 2,stroke = FALSE,fillOpacity = 0.2,group = "myMarkers")%>%
       addDrawToolbar(polylineOptions = F, circleOptions = F, markerOptions = F,circleMarkerOptions = F, polygonOptions = F, singleFeature=TRUE)%>%
