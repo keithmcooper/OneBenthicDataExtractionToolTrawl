@@ -386,8 +386,8 @@ server <- function(input, output) {
       addLayersControl(
         overlayGroups = c("euowf","owf","owf_cab","R4_chara","R4_bid","agg","disp","wave","tidal","tidal_cab","oga","mcz","sac","ncmpa"),options = layersControlOptions(collapsed = FALSE))%>%#"wave_cab",
       hideGroup(c("euowf","owf","owf_cab","R4_chara","R4_bid","agg","disp","wave","tidal","tidal_cab","oga","mcz","sac","ncmpa"))%>%#"wave_cab",
-      addCircleMarkers(data=points,~Longitude,~Latitude,radius = 2,stroke = FALSE,fillOpacity = 0.2,popup = paste0("<b>Survey Name: </b>",points$SurveyName,"<br>","<b>Sample Code: </b>",points$SampleCode))%>%
-      addCircleMarkers(data=points,~Longitude,~Latitude,radius = 2,stroke = FALSE,fillOpacity = 0.2,group = "myMarkers")%>%
+      addCircleMarkers(data=points,~Longitude,~Latitude,radius = 2,stroke = FALSE,fillOpacity = 0.4,popup = paste0("<b>Survey Name: </b>",points$SurveyName,"<br>","<b>Sample Code: </b>",points$SampleCode))%>%
+      addCircleMarkers(data=points,~Longitude,~Latitude,radius = 2,stroke = FALSE,fillOpacity = 0.4,group = "myMarkers")%>%
       addDrawToolbar(polylineOptions = F, circleOptions = F, markerOptions = F,circleMarkerOptions = F, polygonOptions = F, singleFeature=TRUE)%>%
       setView(-3,54.6,zoom=5.5)%>%
       addMouseCoordinates()
