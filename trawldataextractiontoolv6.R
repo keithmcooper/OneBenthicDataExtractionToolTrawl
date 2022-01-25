@@ -132,7 +132,8 @@ pool2 <- dbPool(drv = dbDriver(dw$driver2),
 euowf <- readLines("https://ows.emodnet-humanactivities.eu/wfs?SERVICE=WFS&VERSION=1.1.0&request=GetFeature&typeName=windfarmspoly&OUTPUTFORMAT=json") %>% paste(collapse = "\n") %>% geojson_sf()
 agg <- readLines("https://opendata.arcgis.com/datasets/d734d753d04649e2a7e1c64b820a5df9_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
 owf <- readLines("https://opendata.arcgis.com/datasets/4da955de094e475d8d902ee446e38d58_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
-owf_cab <- readLines("https://opendata.arcgis.com/datasets/ceb51568455e4a9ba85bfd7c2da36fdc_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
+#owf_cab <- readLines("https://opendata.arcgis.com/datasets/ceb51568455e4a9ba85bfd7c2da36fdc_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
+owf_cab <- readLines("https://opendata.arcgis.com/datasets/c15c075302eb40c9922244a3794d73b1_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
 wave <- readLines("https://opendata.arcgis.com/datasets/d9f9dbc0e29b410c87ba544f6082a0d0_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
 #wave_cab <- readLines("https://opendata.arcgis.com/datasets/bf376b05c6ae489b8b8687d6b7d6525d_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf() # layer depricated
 tidal <- readLines("https://opendata.arcgis.com/datasets/db94124b152641a992d4e8dfa14d59f2_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
@@ -330,7 +331,7 @@ Please cite the database as follows: ",br(),tags$b("OneBenthic")," database (202
              #__________________________________________________________________________________________
              #### TAB: FUNDERS ####
              
-             tabPanel("Funders",br(),tags$b("OneBenthic"),"is free to use but not to run. If you found the app useful then please consider joining existing funders to support the initiative. Thankyou!",br(),(img(src="logos.png")),style = 'font-size:90%')
+             tabPanel("Supporters",br(),tags$b("OneBenthic"),"is free to use but not to run. If you found the app useful then please consider joining existing funders and partners to support the initiative. Thankyou!",br(),(img(src="logos2.png")),style = 'font-size:90%')
            )
     )
   )
