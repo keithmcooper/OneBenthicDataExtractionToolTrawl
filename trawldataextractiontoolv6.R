@@ -331,7 +331,7 @@ Please cite the database as follows: ",br(),tags$b("OneBenthic")," database (202
              #__________________________________________________________________________________________
              #### TAB: FUNDERS ####
              
-             tabPanel("Supporters",br(),tags$b("OneBenthic"),"is free to use but not to run. If you found the app useful then please consider joining existing funders and partners to support the initiative. Thankyou!",br(),(img(src="logos2.png")),style = 'font-size:90%')
+             tabPanel("Supporters",br(),tags$b("OneBenthic"),"is free to use but not to run. If you found the app useful then please consider joining existing funders and partners to support the initiative. Thankyou!",br(),(img(src="logos2.PNG")),style = 'font-size:90%')
            )
     )
   )
