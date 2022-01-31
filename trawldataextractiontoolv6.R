@@ -294,7 +294,7 @@ ui <- fluidPage(add_busy_spinner(spin = "fading-circle",position = "bottom-left"
     
     #__________________________________________________________________________________________
     #### MAP ####    
-    column(5,leafletOutput("map",width = "100%", height=950),style='border-left: 1px solid grey'),#850
+    column(5,leafletOutput("map",width = "100%", height=850),style='border-left: 1px solid grey'),#850
     column(5,style='border-left: 1px solid grey',
            
            #__________________________________________________________________________________________
@@ -324,7 +324,7 @@ Please cite the database as follows: ",br(),tags$b("OneBenthic")," database (202
              #__________________________________________________________________________________________
              #### TAB: MAP OVERLAYS ####
              #tabPanel("Map Layers",br(),DT::dataTableOutput("activitytable"),style = 'font-size:85%'),
-             tabPanel("Map Overlays",br(),htmlOutput("activitytable"),style = 'font-size:85%'),
+             tabPanel("Map Overlays",br(),htmlOutput("activitytable"),style = 'font-size:80%'),
              
              #__________________________________________________________________________________________
              #### TAB: DATA PROVIDERS ####
@@ -531,7 +531,7 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
   
   output$coordinates <- DT::renderDataTable({
     coord2 <- unique(coord()[,c(1:4,12,7)])#SurveyName, SampleCode, Latitude, Longitude, GearName, Date  
-    DT::datatable(coord2, options = list(pageLength = 12))
+    DT::datatable(coord2, options = list(pageLength = 9))
     
   })
   
@@ -841,7 +841,7 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
     
     bbdat2 <- unique(bbcoord()[,c(1:4,12,7)])
     #return(bbdat2)
-    DT::datatable(bbdat2, options = list(pageLength = 12))
+    DT::datatable(bbdat2, options = list(pageLength = 9))
     
   })
   
