@@ -19,6 +19,15 @@ library(glue)
 library(postGIStools)
 library(config)
 library(geojsonio)
+library(shinybusy)
+######################################
+
+## Add busy spinner from shinybusy package
+#https://dreamrs.github.io/shinybusy/
+#https://cran.r-project.org/web/packages/shinybusy/shinybusy.pdf
+add_busy_spinner(spin = "fading-circle",position = "bottom-left",margins = c(40, 60),color = "#044D94",timeout = 300,height = "70px",width = "70px")##FFFFFF #0D4581
+
+##############################
 #__________________________________________________________________________________________
 #### CODE TO SOLVE ERROR: Missing dbQuoteLiteral methods for pool'####
 
@@ -272,7 +281,7 @@ map_overlays <- data.frame(
 #__________________________________________________________________________________________
 #### USER INTERFACE ####
 
-ui <- fluidPage(
+ui <- fluidPage(add_busy_spinner(spin = "fading-circle",position = "bottom-left",margins = c(40, 60),color = "#044D94",timeout = 300,height = "70px",width = "70px"),
   titlePanel(title=div(img(src="onebenthic.gif",tags$b(" OneBenthic"),"Data Extraction Tool: Trawl",height = 70, width = 170),#HEIGHT65
                        style='background-color:#B4C7E7;
                     padding-right: 50px')),
