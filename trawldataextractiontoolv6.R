@@ -238,7 +238,7 @@ map_overlays <- data.frame(
       >Offshore Wind Site Agreements (England, Wales & NI), The Crown Estate</a></p>',
          '<p><a href="https://opendata.arcgis.com/datasets/ceb51568455e4a9ba85bfd7c2da36fdc_0.geojson"
       >Offshore Wind Cable Agreements (England, Wales & NI), The Crown Estate</a></p>',
-         '<p><a href="https://opendata.arcgis.com/datasets/c0e61d8972e4438ab1c39304b7f28608_0.geojson"
+         '<p><a href="https://opendata.arcgis.com/datasets/c15c075302eb40c9922244a3794d73b1_0.geojson"
      >Offshore Wind Leasing Round 4 Characterisation Areas (England, Wales and NI), The Crown Estate</a></p>',
          '<p><a href="https://opendata.arcgis.com/datasets/54dce8a263324a85b36523e31fff20cc_0.geojson"
       >Offshore Wind Leasing Round 4 Bidding Areas (England, Wales and NI), The Crown Estate</a></p>',
@@ -316,7 +316,7 @@ To allow users to explore and download trawl sample data (macrofaunal abundances
                       "These tools are actively being used by offshore marine industries and government for purposes of project planning, licence compliance monitoring and research.",br(),
                       h4("Origin of data"),"Data originate from multiple sources and providers (see 'Data Provider' tab). Subject to funding, new publicly available data will continue to be added to",tags$b("OneBenthic")," so that it continues to provide an up-to-date and 'complete' source of UK benthic data.",br(),
                       h4("Data access and use"),tags$b("OneBenthic"),"contains data from a range of data providers in industry and government. With the permission of these providers, data are made available under Crown Copyright and", tags$a(href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/", "Open Government Licence."),"
-Please cite the database as follows: ",br(),tags$b("OneBenthic")," database (2020). Available from https://openscience.cefas.co.uk/OneBenthicExtraction/. Accessed: DD/MM/YYYY.",br(),
+Please cite the database as follows: ",br(),tags$b("OneBenthic")," database (2022). Available from https://rconnect.cefas.co.uk/onebenthic_dataextractiontrawl/. Accessed: DD/MM/YYYY.",br(),
                       h4("Data Disclaimer"),"Whilst due care and attention has been exercised in the collation of",tags$b("OneBenthic"),"data, Cefas assumes no responsibility for the quality or accuracy of the information. Users are advised to check data with the original source, and to critically assess whether data are fit for the user's intended purpose.",br(),
                       h4("Contact"),"Get in touch to tell us how you've used",tags$b("OneBenthic"),"data, to share new insights with the",tags$b("OneBenthic"),"community or to report technical or data issues. Email: keith.cooper@cefas.co.uk",
                       style = 'font-size:90%'),
@@ -465,7 +465,9 @@ ts.abund,
 ts.biomass,
 su.datapubliclyavailable,
 s.samplecode2,
-o.ownername
+o.ownername,
+su.metadata,
+su.reference
 
                   
 FROM 
@@ -486,7 +488,7 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
     coord3 <- as.data.frame(dbGetQuery(pool, coord2))
     
     ## Drop the geartype col (only used for querying)
-    coord4 <- coord3[,c(1:11,13:28)]
+    coord4 <- coord3[,c(1:11,13:30)]
     
     ## Change column names
     colnames(coord4)[1] <- "SurveyName"
@@ -516,6 +518,8 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
     colnames(coord4)[25] <- "datapubliclyavailable"
     colnames(coord4)[26] <- "SampleCode2"
     colnames(coord4)[27] <- "DataOwner"
+    colnames(coord4)[28] <- "Source"
+    colnames(coord4)[29] <- "Reference"
     #colnames(coord4)[18] <- "WaterDepth"
     
     
@@ -537,7 +541,7 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
   data2 <- reactive({
     
     #data2 <- coord()[,c(1,2,16,3,4,18,6,5,19,7,10,13,11,12,14,15,17)]
-    data2 <- coord()[,c(1:2,26,3:16,19:25,27)]
+    data2 <- coord()[,c(1:2,26,3:16,19:25,27, 28, 29)]
     #names(data2)
     #1:SurveyName
     #2:SampleCode
@@ -564,6 +568,8 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
     #23:Biomass
     #24:datapubliclyavailable
     #25:DataOwner 
+    #26:Source 
+    #27:Reference 
 
     
     return(data2)
@@ -601,8 +607,10 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
     #23:Biomass
     #24:datapubliclyavailable
     #25:DataOwner 
+    #26:Source 
+    #27:Reference 
     
-    data5 <- data4[,c(1:23,25)]  # drop datapubliclyavailable
+    data5 <- data4[,c(1:23,25, 26, 27)]  # drop datapubliclyavailable
     
     ## Remove NA from col 14 'TaxonQualifier'
     #data5[14][is.na(data5[14])] <- ""
@@ -641,9 +649,11 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
     #22:Abund
     #23:Biomass
     #24:datapubliclyavailable
-    #25:DataOwner 
+    #25:DataOwner
+    #26:Source 
+    #27:Reference 
     
-    data7 <- unique(data6[,c(1:17,25)]) #i.e. drop faunal data and include only sample metadata
+    data7 <- unique(data6[,c(1:17,25, 26, 27)]) #i.e. drop faunal data and include only sample metadata
     #names(data7)
     #1:SurveyName
     #2:SampleCode
@@ -663,6 +673,9 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
     #16:SampleVol(litres)
     #17:MacroSieveSize_mm
     #18:DataOwner 
+    #19:Source
+    #20:Reference
+    
        print(data7)
     
   })
