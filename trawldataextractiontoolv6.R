@@ -756,7 +756,9 @@ ts.abund,
 ts.biomass,
 su.datapubliclyavailable,
 s.samplecode2,
-o.ownername
+o.ownername,
+su.metadata,
+su.reference
                   
 FROM 
 associations.survey as su
@@ -782,7 +784,7 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
     bbcoord3 <- as.data.frame(dbGetQuery(pool, bbcoord2))
     
     ## Drop the geartype col (only used for querying)
-    bbcoord4 <- bbcoord3[,c(1:11,13:28)]
+    bbcoord4 <- bbcoord3[,c(1:11,13:30)]
     
     ## Change column names
     #colnames(bbcoord4)[1] <- "SurveyName"
@@ -826,7 +828,9 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
     colnames(bbcoord4)[24] <- "Biomass"
     colnames(bbcoord4)[26] <- "SampleCode2"
     colnames(bbcoord4)[27] <- "DataOwner"
-      
+    colnames(bbcoord4)[28] <- "Source"
+    colnames(bbcoord4)[29] <- "Reference"  
+    
     return(bbcoord4)
   })
   
@@ -874,9 +878,11 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
     #25 "datapubliclyavailable"
     #26 "SampleCode2"
     #27 "DataOwner"
+    #28 "Source"
+    #29 "Reference"
     
     ## Drop unwanted cols: 17 worrmstaxa_taxonname, 18 taxaqual_qualifier, 25 datapubliclyavailable
-    all <- bbdatt[,c(1:2,26,3:16,19:24,27)]
+    all <- bbdatt[,c(1:2,26,3:16,19:24,27,28,29)]
     #all colnames:
     #1 "SurveyName"
     #2 "SampleCode"
@@ -902,6 +908,8 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
     #22 "Abund"
     #23 "Biomass"
     #24 "DataOwner"
+    #25 "Source"
+    #26 "Reference"
     print(all)
     
   })
@@ -941,9 +949,11 @@ ORDER by su.surveyname, s.samplecode,ts.abund desc;",
     #25 "datapubliclyavailable"
     #26 "SampleCode2"
     #27 "DataOwner"
+    #28 "Source"
+    #29 "Reference"
     
     ## Take sample cols as for the public data (minus the faunal info (cols 19:24))
-    bbdatf2 <- unique(bbdatf[,c(1:2,26,3:16,27)])#19:24,
+    bbdatf2 <- unique(bbdatf[,c(1:2,26,3:16,27,28,29)])#19:24,
     #bbdatf2 columns: 
     #1 "SurveyName"
     #2 "SampleCode"
