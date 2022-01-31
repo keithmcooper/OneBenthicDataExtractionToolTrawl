@@ -232,34 +232,35 @@ map_overlays <- data.frame(
                "mcz",
                "sac",
                "ncmpa"),
-  Link=c('<p><a href="https://ows.emodnet-humanactivities.eu/wfs?SERVICE=WFS&VERSION=1.1.0&request=GetFeature&typeName=windfarmspoly&OUTPUTFORMAT=json"
+  Link=c('<p><a href="https://www.emodnet-humanactivities.eu/search-results.php?dataname=Wind+Farms+%28Polygons%29"
       >Wind Farms (Polygons)</a></p>',
-         '<p><a href="https://opendata.arcgis.com/datasets/4da955de094e475d8d902ee446e38d58_0.geojson"
+         '<p><a href="https://opendata-thecrownestate.opendata.arcgis.com/datasets/offshore-wind-site-agreements-england-wales-ni-the-crown-estate/explore?location=52.790200%2C-1.251504%2C7.36"
       >Offshore Wind Site Agreements (England, Wales & NI), The Crown Estate</a></p>',
-         '<p><a href="https://opendata.arcgis.com/datasets/ceb51568455e4a9ba85bfd7c2da36fdc_0.geojson"
+         '<p><a href="https://opendata-thecrownestate.opendata.arcgis.com/datasets/offshore-wind-cable-agreements-england-wales-ni-the-crown-estate/explore?location=52.588556%2C-1.244512%2C7.00"
       >Offshore Wind Cable Agreements (England, Wales & NI), The Crown Estate</a></p>',
-         '<p><a href="https://opendata.arcgis.com/datasets/c15c075302eb40c9922244a3794d73b1_0.geojson"
+         '<p><a href="https://opendata-thecrownestate.opendata.arcgis.com/datasets/offshore-wind-leasing-round-4-characterisation-areas-england-wales-and-ni-the-crown-estate/explore?location=52.677790%2C-1.394816%2C7.18"
      >Offshore Wind Leasing Round 4 Characterisation Areas (England, Wales and NI), The Crown Estate</a></p>',
-         '<p><a href="https://opendata.arcgis.com/datasets/54dce8a263324a85b36523e31fff20cc_0.geojson"
+         '<p><a href="https://opendata-thecrownestate.opendata.arcgis.com/datasets/offshore-wind-leasing-round-4-bidding-areas-england-wales-and-ni-the-crown-estate/explore?location=52.930510%2C-0.830858%2C7.00"
       >Offshore Wind Leasing Round 4 Bidding Areas (England, Wales and NI), The Crown Estate</a></p>',
-         '<p><a href="https://opendata.arcgis.com/datasets/d734d753d04649e2a7e1c64b820a5df9_0.geojson"
+         '<p><a href="https://opendata-thecrownestate.opendata.arcgis.com/datasets/offshore-minerals-aggregates-site-agreements-england-wales-ni-the-crown-estate/explore?location=52.033181%2C-1.121135%2C7.89"
       >Offshore Minerals Aggregates Site Agreements (England, Wales & NI), The Crown Estate</a></p>',
          '<p><a href="http://data.cefas.co.uk/#/View/407"
       >UK Disposal Site Layer, Cefas</a></p>',
-         '<p><a href="https://opendata.arcgis.com/datasets/d9f9dbc0e29b410c87ba544f6082a0d0_0.geojson"
+         '<p><a href="https://opendata-thecrownestate.opendata.arcgis.com/datasets/offshore-wave-site-agreements-england-wales-ni-the-crown-estate/explore?location=50.777918%2C-5.092345%2C9.26"
      >Offshore Wave Site Agreements (England, Wales & NI), The Crown Estate</a></p>',
          #'<p><a href="https://opendata.arcgis.com/datasets/bf376b05c6ae489b8b8687d6b7d6525d_0.geojson">Visit W3Schools.com!</a></p>',
-         '<p><a href="https://opendata.arcgis.com/datasets/db94124b152641a992d4e8dfa14d59f2_0.geojson"
+         '<p><a href="https://opendata-thecrownestate.opendata.arcgis.com/datasets/offshore-tidal-stream-site-agreements-england-wales-ni-the-crown-estate/explore?location=52.888850%2C-3.683844%2C7.42"
       >Offshore Tidal Stream Site Agreements (England, Wales & NI), The Crown Estate</a></p>',
-         '<p><a href="https://opendata.arcgis.com/datasets/3e5203ce7daa4ae08690699925668f46_0.geojson"
+         '<p><a href="https://opendata-thecrownestate.opendata.arcgis.com/datasets/offshore-tidal-stream-cable-agreements-england-wales-ni-the-crown-estate/explore?location=51.877184%2C-5.315998%2C17.04"
       >Offshore Tidal Stream Cable Agreements (England, Wales & NI), The Crown Estate</a></p>',
-         '<p><a href="https://opendata.arcgis.com/datasets/3c950a2c8186438899f99ced733dd947_0.geojson"
+         '<p><a href="https://data-ogauthority.opendata.arcgis.com/datasets/oga-licences-wgs84-3/explore?location=56.616000%2C-5.050750%2C5.16"
       >OGA Licences WGS84, Oil and Gas Authority</a></p>',
-         '<p><a href="https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27/c20190905_OffshoreMPAs_WGS84.shp"
-      >Marine Conservation Zones (MCZ)</a></p>',
-         '<p><a href="https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27/c20190905_OffshoreMPAs_WGS84.shp"
+         #'<p><a href="https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27/c20190905_OffshoreMPAs_WGS84.shp"
+         '<p><a href="https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27"
+          >Marine Conservation Zones (MCZ)</a></p>',
+         '<p><a href="https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27"
       >Special Area of Conservation (SAC)</a></p>',
-         '<p><a href="https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27/c20190905_OffshoreMPAs_WGS84.shp"
+         '<p><a href="https://hub.jncc.gov.uk/assets/ade43f34-54d6-4084-b66a-64f0b4a5ef27"
       >Nature Conservation Marine Protected Areas (Scotland)</a></p>'),
   Description=c("Offshore wind installations in European seas from the European Marine Observation and Data Network (EMODnet)",
           "This dataset represents all current offshore wind farm agreements in pre-planning, planning, construction and operational phases, as well as Preferred Projects subject to HRA, in English, Welsh and Northern Irish waters.",
@@ -332,15 +333,15 @@ Please cite the database as follows: ",br(),tags$b("OneBenthic")," database (202
                       h4("Government"), tags$i("Department for Environment, Food and Rural Affairs (DEFRA); Centre for Environment, Fisheries and Aquaculture Science (CEFAS)"),br(),br(),
                       h4("Marine Aggregates"),tags$i("Hanson Aggregates Marine Limited"),br(),br(),
                       h4("Offshore Wind"), tags$i("SMart Wind Limited"),br(),br(),
-                      h4("Oil & Gas"), br(),br(),
+                      #h4("Oil & Gas"), br(),br(),
                       h4("Nuclear"),tags$i("EDF Energy"),br(),br(),
-                      h4("Ports & Harbours"),
+                      #h4("Ports & Harbours"),
                       style = 'font-size:90%'),
              
              #__________________________________________________________________________________________
              #### TAB: FUNDERS ####
              
-             tabPanel("Supporters",br(),tags$b("OneBenthic"),"is free to use but not to run. If you found the app useful then please consider joining existing funders and partners to support the initiative. Thankyou!",br(),(img(src="logos2.PNG")),style = 'font-size:90%')
+             tabPanel("Supporters",br(),tags$b("OneBenthic"),"is free to use but not to run. If you found this app useful then please consider joining existing funders and partners to support the initiative. Thank you!",br(),(img(src="logos2.PNG")),style = 'font-size:90%')
            )
     )
   )
