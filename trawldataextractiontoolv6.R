@@ -291,7 +291,7 @@ ui <- fluidPage(add_busy_spinner(spin = "fading-circle",position = "bottom-left"
     
     #__________________________________________________________________________________________
     #### SELECT SURVEY(S) ####    
-    column(2,selectInput(inputId="surveyInput", multiple = T,h4("Select by:",br(),br(),"1. Survey",style="color:#808080"),choices =surveys),h4("Or",br(),br()," 2. Sample (using map tool",style="color:#808080",img(src="drawrectangleicon.png",height = 20, width = 20),")",br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),"Searches independent - see appropriate tab for results")),
+    column(2,selectInput(inputId="surveyInput", multiple = T,h4("Select by:",br(),br(),"1. Survey",style="color:#808080"),choices =surveys),h4("Or",br(),br()," 2. Sample (using map tool",style="color:#808080",img(src="drawrectangleicon.png",height = 20, width = 20),")",br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),"Searches independent - see appropriate tab for results",br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),tags$i("'Use the app to explore and access benthic data from 2m beam trawl samples...'"))),
     
     #__________________________________________________________________________________________
     #### MAP ####    
@@ -341,7 +341,7 @@ Please cite the database as follows: ",br(),tags$b("OneBenthic")," database (202
              #__________________________________________________________________________________________
              #### TAB: FUNDERS ####
              
-             tabPanel("Supporters",br(),tags$b("OneBenthic"),"is free to use but not to run. If you found this app useful then please consider joining existing funders and partners to support the initiative. Thank you!",br(),(img(src="logos2.PNG")),style = 'font-size:90%')
+             tabPanel("Supporters",br(),tags$b("OneBenthic"),"is free to use, but not to run. If you found this app useful then please consider joining existing funders and partners to support the initiative. Thank you!",br(),(img(src="logos2.PNG")),style = 'font-size:90%')
            )
     )
   )
@@ -400,7 +400,7 @@ server <- function(input, output) {
       addCircleMarkers(data=points,~Longitude,~Latitude,radius = 2,stroke = FALSE,fillOpacity = 0.4,popup = paste0("<b>Survey Name: </b>",points$SurveyName,"<br>","<b>Sample Code: </b>",points$SampleCode))%>%
       addCircleMarkers(data=points,~Longitude,~Latitude,radius = 2,stroke = FALSE,fillOpacity = 0.4,group = "myMarkers")%>%
       addDrawToolbar(polylineOptions = F, circleOptions = F, markerOptions = F,circleMarkerOptions = F, polygonOptions = F, singleFeature=TRUE)%>%
-      setView(-3,54.6,zoom=5.5)%>%
+      setView(-3,54.6,zoom=5)%>%
       addMouseCoordinates()
     
   })
