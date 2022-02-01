@@ -291,7 +291,7 @@ ui <- fluidPage(add_busy_spinner(spin = "fading-circle",position = "bottom-left"
     
     #__________________________________________________________________________________________
     #### SELECT SURVEY(S) ####    
-    column(2,selectInput(inputId="surveyInput", multiple = T,h4("Select by:",br(),br(),"1. Survey",style="color:#808080"),choices =surveys),h4("Or",br(),br()," 2. Sample (using map tool",style="color:#808080",img(src="drawrectangleicon.png",height = 20, width = 20),")",br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),"Searches independent - see appropriate tab for results",br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),tags$i("'Use the app to explore and access benthic data from 2m beam trawl samples...'"))),
+    column(2,selectInput(inputId="surveyInput", multiple = T,h4("Select by:",br(),br(),"1. Survey",style="color:#808080"),choices =surveys),h4("Or",br(),br()," 2. Sample (using map tool",style="color:#808080",img(src="drawrectangleicon.png",height = 20, width = 20),")",br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),"Searches independent - see appropriate tab for results",br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),tags$i("'Use the app to explore and access benthic data from 2m beam trawl samples...'"))),
     
     #__________________________________________________________________________________________
     #### MAP ####    
