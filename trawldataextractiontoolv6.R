@@ -123,7 +123,7 @@ colnames(points)[4] <- "SampleCode"
 #st_crs(R4_bid) #EPSG: 4326 
 #__________________________________________________________________________________________
 #### CREATE A CONNECTION TO OneBenthic LIVE ####
-Sys.setenv(R_CONFIG_ACTIVE = "one_benthic_trawl")
+Sys.setenv(R_CONFIG_ACTIVE = "one_benthic")
 
 dw <- config::get()
 
@@ -136,52 +136,35 @@ pool2 <- dbPool(drv = dbDriver(dw$driver2),
 #__________________________________________________________________________________________
 #### BRING IN ACTIVITY LAYERS ####
 
+## GET API LINKS FROM OB
+euowfapilink <- st_read (dsn = pool2, query = "SELECT apilink FROM spatial.apilinks where id=1") 
+owfapilink <- st_read (dsn = pool2, query = "SELECT apilink FROM spatial.apilinks where id=2")
+owf_cabapilink <- st_read (dsn = pool2, query = "SELECT apilink FROM spatial.apilinks where id=3")
+waveapilink <- st_read (dsn = pool2, query = "SELECT apilink FROM spatial.apilinks where id=4")
+tidalapilink <- st_read (dsn = pool2, query = "SELECT apilink FROM spatial.apilinks where id=5")
+tidal_cabapilink <- st_read (dsn = pool2, query = "SELECT apilink FROM spatial.apilinks where id=6")
+R4_charaapilink <- st_read (dsn = pool2, query = "SELECT apilink FROM spatial.apilinks where id=7")
+R4_bidapilink <- st_read (dsn = pool2, query = "SELECT apilink FROM spatial.apilinks where id=8")
+
 ## API
-#Source: EU level: https://www.emodnet-humanactivities.eu/view-data.php 
-euowf <- readLines("https://ows.emodnet-humanactivities.eu/wfs?SERVICE=WFS&VERSION=1.1.0&request=GetFeature&typeName=windfarmspoly&OUTPUTFORMAT=json") %>% paste(collapse = "\n") %>% geojson_sf()
-agg <- readLines("https://opendata.arcgis.com/datasets/d734d753d04649e2a7e1c64b820a5df9_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
-owf <- readLines("https://opendata.arcgis.com/datasets/4da955de094e475d8d902ee446e38d58_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
-#owf_cab <- readLines("https://opendata.arcgis.com/datasets/ceb51568455e4a9ba85bfd7c2da36fdc_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
-owf_cab <- readLines("https://opendata.arcgis.com/datasets/c15c075302eb40c9922244a3794d73b1_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
-wave <- readLines("https://opendata.arcgis.com/datasets/d9f9dbc0e29b410c87ba544f6082a0d0_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
-#wave_cab <- readLines("https://opendata.arcgis.com/datasets/bf376b05c6ae489b8b8687d6b7d6525d_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf() # layer depricated
-tidal <- readLines("https://opendata.arcgis.com/datasets/db94124b152641a992d4e8dfa14d59f2_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
-tidal_cab <- readLines("https://opendata.arcgis.com/datasets/3e5203ce7daa4ae08690699925668f46_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
-oga <- readLines("https://opendata.arcgis.com/datasets/3c950a2c8186438899f99ced733dd947_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
-R4_chara <- readLines("https://opendata.arcgis.com/datasets/c0e61d8972e4438ab1c39304b7f28608_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
-R4_bid <- readLines("https://opendata.arcgis.com/datasets/54dce8a263324a85b36523e31fff20cc_0.geojson") %>% paste(collapse = "\n") %>% geojson_sf()
+euowf <- readLines(as.character(euowfapilink)) %>% paste(collapse = "\n") %>% geojson_sf()
+owf <- readLines(as.character(owfapilink)) %>% paste(collapse = "\n") %>% geojson_sf()
+owf_cab <- readLines(as.character(owf_cabapilink)) %>% paste(collapse = "\n") %>% geojson_sf()
+wave <- readLines(as.character(waveapilink)) %>% paste(collapse = "\n") %>% geojson_sf()
+tidal <- readLines(as.character(tidalapilink)) %>% paste(collapse = "\n") %>% geojson_sf()
+tidal_cab <- readLines(as.character(tidal_cabapilink)) %>% paste(collapse = "\n") %>% geojson_sf()
+R4_chara <- readLines(as.character(R4_charaapilink)) %>% paste(collapse = "\n") %>% geojson_sf()
+R4_bid <- readLines(as.character(R4_bidapilink)) %>% paste(collapse = "\n") %>% geojson_sf()
 
 ## SPATIAL DATA FROM ONEBENTHIC
+oga <- st_read(pool2, query = "SELECT * FROM spatial.oga_licences_wgs84;")
 mcz <-  st_read(pool2, query = "SELECT * FROM spatial.c20190905_offshorempas_wgs84 WHERE site_statu = 'MCZ - Secretary of State';")
 sac <-  st_read(pool2, query = "SELECT * FROM spatial.c20190905_offshorempas_wgs84 WHERE site_statu = 'SAC'or site_statu = 'cSAC';")
 ncmpa <-  st_read(pool2, query = "SELECT * FROM spatial.c20190905_offshorempas_wgs84 WHERE site_statu = 'NCMPA';")
 disp  <-  st_read(pool2, query = "SELECT * FROM spatial.disposalSiteJan2020;")
-#agg <- st_read(pool, query = "SELECT * FROM ap_marine_aggregate.extraction_areas;")
-#oga <- st_read(pool, query = "SELECT * FROM spatial.oga_licences_wgs84;")
-#owf <- st_read(pool, query = "SELECT * FROM spatial.offshore_wind_site_agreements_england_wales__ni__the_crown_esta;")
-#owf_cab <- st_read(pool, query = "SELECT * FROM spatial.offshore_wind_cable_agreements_england_wales__ni_the_crown_esta;")
-#wave <- st_read(pool, query = "SELECT * FROM spatial.offshore_wave_site_agreements_england_wales__ni_the_crown_estat;")
-#wave_cab <- st_read(pool, query = "SELECT * FROM spatial.offshore_wave_cable_agreements_england_wales__ni_the_crown_esta;")
-#tidal <- st_read(pool, query = "SELECT * FROM spatial.offshore_tidal_stream_site_agreements_england_wales__ni_the_cro;")
-#tidal_cab <- st_read(pool, query = "SELECT * FROM spatial.offshore_tidal_stream_cable_agreements_england_wales__ni_the_cr;")
-#R4_chara <- st_read(pool, query = "SELECT * FROM spatial.offshore_wind_leasing_round_4_characterisation_areas_england_wa;")
-#R4_bid <- st_read(pool, query = "SELECT * FROM spatial.offshore_wind_leasing_round_4_bidding_areas_england_wales_and_n;")
-
-## Check class of objects
-#class(mcz)#[1] "sf"         "data.frame"
-#class(sac)#[1] "sf"         "data.frame"
-#class(ncmpa)#[1] "sf"         "data.frame"
-#class(oga)#[1] "sf"         "data.frame"
-#class(disp)#[1] "sf"         "data.frame"
-#class(agg) #[1] "sf"         "data.frame"
-#class(owf)#[1] "sf"         "data.frame"
-#class(owf_cab)#[1] "sf"         "data.frame"
-#class(wave)#[1] "sf"         "data.frame"
-#class(wave_cab)#[1] "sf"         "data.frame"
-#class(tidal)#[1] "sf"         "data.frame"
-#class(tidal_cab)#[1] "sf"         "data.frame"
-#class(R4_chara)#[1] "sf"         "data.frame"
-#class(R4_bid)#[1] "sf"         "data.frame"
+ref <- st_read(pool2, query = "SELECT * FROM spatial.ref_box_all;")
+siz<- st_read(pool2, query = "SELECT * FROM ap_marine_aggregate.extraction_areas_siz;")
+agg <- st_read(pool2, query = "SELECT * FROM ap_marine_aggregate.extraction_areas;")
 
 ## Check CRS
 st_crs(mcz)#Coordinate Reference System: NA
@@ -193,7 +176,6 @@ st_crs(agg) # 4326
 st_crs(owf)#Coordinate Reference System: NA
 st_crs(owf_cab)#Coordinate Reference System: NA
 st_crs(wave)#Coordinate Reference System: NA
-#st_crs(wave_cab)#Coordinate Reference System: NA
 st_crs(tidal)#Coordinate Reference System: NA
 st_crs(tidal_cab)#Coordinate Reference System: NA
 st_crs(R4_chara)#Coordinate Reference System: NA
@@ -203,16 +185,7 @@ st_crs(R4_bid)#Coordinate Reference System: NA
 st_crs(mcz) <- 4326
 st_crs(sac) <- 4326
 st_crs(ncmpa) <- 4326
-#st_crs(oga) <- 4326
 st_crs(disp) <- 4326
-#st_crs(owf) <- 4326
-#st_crs(owf_cab) <- 4326
-#st_crs(wave) <- 4326
-#st_crs(wave_cab) <- 4326
-#st_crs(tidal) <- 4326
-#st_crs(tidal_cab) <- 4326
-#st_crs(R4_chara) <- 4326
-#st_crs(R4_bid) <- 4326
 
 #__________________________________________________________________________________________
 #### MAP LAYERS SOURCE INFO ####
@@ -424,7 +397,7 @@ server <- function(input, output) {
                  ~Longitude,
                  ~Latitude,
                  #group = "myMarkers")
-                 
+                
                  #group = "myMarkers",popup = ~paste(SurveyName,SampleCode))
                  group = "myMarkers",popup = ~paste("<b>Survey Name: </b>",SurveyName,"<br>","<b>Sample Code: </b>",SampleCode))
     #group = "myMarkers",popup = ~as.character("Survey Code:",points$SampleCode))#only gives header
