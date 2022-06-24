@@ -20,6 +20,9 @@ library(postGIStools)
 library(config)
 library(geojsonio)
 library(shinybusy)
+
+## Stop for 502 error
+refresh()
 ######################################
 
 ## Add busy spinner from shinybusy package
