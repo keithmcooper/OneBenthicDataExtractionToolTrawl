@@ -16,10 +16,11 @@ library(pool)
 library(sp)
 library(RPostgreSQL)
 library(glue)
-library(postGIStools)
+#library(postGIStools)
 library(config)
 library(geojsonio)
 library(shinybusy)
+library(leaflet.esri)
 
 ######################################
 
@@ -291,7 +292,7 @@ To allow users to explore and download trawl sample data (macrofaunal abundances
                       "These tools are actively being used by offshore marine industries and government for purposes of project planning, licence compliance monitoring and research.",br(),
                       h4("Origin of data"),"Data originate from multiple sources and providers (see 'Data Provider' tab). Subject to funding, new publicly available data will continue to be added to",tags$b("OneBenthic")," so that it continues to provide an up-to-date and 'complete' source of UK benthic data.",br(),
                       h4("Data access and use"),tags$b("OneBenthic"),"contains data from a range of data providers in industry and government. With the permission of these providers, data are made available under Crown Copyright and", tags$a(href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/", "Open Government Licence."),"
-Please cite the database as follows: ",br(),tags$b("OneBenthic")," database (2022). Available from https://rconnect.cefas.co.uk/onebenthic_dataextractiontrawl/. Accessed: DD/MM/YYYY.",br(),
+Please cite the database as follows: ",br(),tags$b("OneBenthic")," database (YYYY). Accessed via https://rconnect.cefas.co.uk/onebenthic_dataextractiontrawl/ on DD/MM/YYYY.",br(),
                       h4("Data Disclaimer"),"Whilst due care and attention has been exercised in the collation of",tags$b("OneBenthic"),"data, Cefas assumes no responsibility for the quality or accuracy of the information. Users are advised to check data with the original source, and to critically assess whether data are fit for the user's intended purpose.",br(),
                       h4("Contact"),"Get in touch to tell us how you've used",tags$b("OneBenthic"),"data, to share new insights with the",tags$b("OneBenthic"),"community or to report technical or data issues. Email: keith.cooper@cefas.co.uk",
                       style = 'font-size:90%'),
@@ -352,7 +353,8 @@ server <- function(input, output) {
     
     ## Basic map
     leaflet() %>%
-      addProviderTiles(providers$Esri.OceanBasemap,options = providerTileOptions(noWrap = TRUE))%>%
+      addEsriBasemapLayer(esriBasemapLayers$Oceans, autoLabels = F)%>% 
+      #addProviderTiles(providers$Esri.OceanBasemap,options = providerTileOptions(noWrap = TRUE))%>%
       addPolygons(data=euowf,color = "#444444", weight = 1, smoothFactor = 0.5,group = "euowf",popup = paste0("<b>Name: </b>", euowf$name))%>%
       addPolygons(data=owf,color = "#444444", weight = 1, smoothFactor = 0.5,group = "owf",popup = paste0("<b>Name: </b>", owf$Name_Prop, "<br>","<b>Status: </b>", owf$Inf_Status))%>%
       addPolygons(data=owf_cab,color = "#444444", weight = 1, smoothFactor = 0.5,group = "owf_cab",popup = paste0("<b>Name: </b>", owf_cab$Name_Prop, "<br>","<b>Status: </b>", owf_cab$Infra_Stat))%>%
